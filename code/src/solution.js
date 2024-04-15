@@ -47,49 +47,47 @@ window.init = async () => {
 window.loop = (dt, input) => {
   // Move the Porsche based on user input
   const p = scene.getObjectByName('porsche');
-  const p1 = scene.getObjectByName(""); // Assuming the ground plane is named 'plane'
-  console.log(p1)
+  const speed = 0.05 * dt; // Adjust the speed as needed
+  
+  const planeSizeX = 900;
+  const planeSizeZ = 900;
+  const minX = -planeSizeX / 2;
+  const maxX = planeSizeX / 2;
+  const minZ = -planeSizeZ / 2;
+  const maxZ = planeSizeZ / 2;
 
-  if (input.keys.has('ArrowUp')) {
-    if (!checkCollision(p.position.clone().add(new THREE.Vector3(0, 0, -0.01 * dt)), p1)) {
-      p.position.z -= 0.01 * dt;
-      p.rotation.x += 0.05; // Rotate the Porsche around the x-axis when moving forward
-    }
+  if (input.keys.has('ArrowUp') && p.position.z - speed >= minZ) {
+    p.position.z -= speed;
+     p.rotation.z -= 0.05;
+    console.log(p.rotation);
+    camera.position.copy(p.position);
+    camera.position.add(new THREE.Vector3(5, 5, 5)); // Offset the camera position if needed
+    camera.lookAt(p.position); // Make the camera look at the Porsche
+  
   }
 
-  if (input.keys.has('ArrowDown')) {
-    if (!checkCollision(p.position.clone().add(new THREE.Vector3(0, 0, 0.01 * dt)), p1)) {
-      p.position.z += 0.01 * dt;
-      p.rotation.x -= 0.01; // Rotate the Porsche around the x-axis when moving backward
-    }
+  if (input.keys.has('ArrowDown') && p.position.z + speed <= maxZ) {
+    p.position.z += speed;
+    camera.position.copy(p.position);
+    camera.position.add(new THREE.Vector3(5, 5, 5)); // Offset the camera position if needed
+    camera.lookAt(p.position); // Make the camera look at the Porsche
+    
   }
 
-  if (input.keys.has('ArrowLeft')) {
-    if (!checkCollision(p.position.clone().add(new THREE.Vector3(-0.01 * dt, 0, 0)), p1)) {
-      p.position.x -= 0.01 * dt;
-      p.rotation.y += 0.01; // Rotate the Porsche around the y-axis when moving left
-    }
+  if (input.keys.has('ArrowLeft') && p.position.x - speed >= minX) {
+    p.position.x -= speed;
+    camera.position.copy(p.position);
+    camera.position.add(new THREE.Vector3(5, 5, 5)); // Offset the camera position if needed
+    camera.lookAt(p.position); // Make the camera look at the Porsche
   }
 
-  if (input.keys.has('ArrowRight')) {
-    if (!checkCollision(p.position.clone().add(new THREE.Vector3(0.01 * dt, 0, 0)), p1)) {
-      p.position.x += 0.01 * dt;
-      p.rotation.y -= 0.01; // Rotate the Porsche around the y-axis when moving right
-    }
+  if (input.keys.has('ArrowRight')&& p.position.x + speed <= maxX) {
+    p.position.x += speed;
+    camera.position.copy(p.position);
+    camera.position.add(new THREE.Vector3(5, 5, 5)); // Offset the camera position if needed
+    camera.lookAt(p.position); // Make the camera look at the Porsche
   }
-
+  
   // Render the scene
   renderer.render(scene, camera);
 };
-
-function checkCollision(position, object) {
-  const raycaster = new THREE.Raycaster(position, new THREE.Vector3(0, -1, 0)); // Create a raycaster pointing downwards from the position
-  const intersects = raycaster.intersectObject(object, true); // Check for intersections with the ground plane
-
-  // Check if there are any intersections and if the intersection point is above the object's surface
-  if (intersects.length > 0 && intersects[0].point.y <= position.y) {
-    return true; // Return true if there is an intersection and it's below or at the same level as the position
-  }
-
-  return false; // Return false if there are no collisions or if the collision point is above the position
-}
