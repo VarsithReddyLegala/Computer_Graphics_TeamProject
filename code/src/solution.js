@@ -58,7 +58,7 @@ window.loop = (dt, input) => {
 
   if (input.keys.has('ArrowUp') && p.position.z - speed >= minZ) {
     p.position.z -= speed;
-    p.rotation.x += 0.01 * dt;
+    p.rotation.x -= 0.01 * dt;
     camera.position.copy(p.position);
     camera.position.add(new THREE.Vector3(5, 5, 5)); 
     camera.lookAt(p.position);
@@ -82,7 +82,7 @@ window.loop = (dt, input) => {
 
   if (input.keys.has('ArrowRight') && p.position.x + speed <= maxX) {
     p.position.x += speed;
-    p.rotation.z += 0.01 * dt;
+    p.rotation.z -= 0.01 * dt;
     camera.position.copy(p.position);
     camera.position.add(new THREE.Vector3(5, 5, 5)); 
     camera.lookAt(p.position);
