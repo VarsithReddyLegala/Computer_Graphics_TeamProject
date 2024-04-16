@@ -1,8 +1,0 @@
-Model Information:
-* title:	Rock
-* source:	https://sketchfab.com/3d-models/rock-b222b92dc5a4470da80a0e22050320c5
-* author:	pixbox (https://sketchfab.com/pixbox)
-
-Model License:
-* license type:	SKETCHFAB Standard (https://sketchfab.com/licenses)
-* requirements:	Under basic restrictions, use worldwide, on all types of media, commercially or not, and in all types of derivative works
