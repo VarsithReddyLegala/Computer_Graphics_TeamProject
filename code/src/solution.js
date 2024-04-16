@@ -20,8 +20,7 @@ window.init = async () => {
 
   const directionalLight = new THREE.DirectionalLight(0xffffff, 10);
   scene.add(directionalLight);
-  // const helper = new THREE.DirectionalLightHelper( directionalLight, 5 );
-  // scene.add( helper );
+ 
 
   const geometry = new THREE.PlaneGeometry( 10, 10 );
   const texture = new THREE.TextureLoader().load('./assets/grass.jpg' ); 
@@ -36,21 +35,21 @@ window.init = async () => {
   plane.scale.set(100, 100, 100);
   
 
-  const porsche = await load('./assets/porsche/scene.gltf');
-  porsche.name = 'porsche';
-  porsche.position.set(0, 0, 0);
-  scene.add(porsche);
+  const rock = await load('./assets/Rock/scene.gltf');
+  rock.name = 'rock';
+  rock.position.set(1, 1, 1);
+  rock.scale.set(2,2,2);
+  scene.add(rock);
   scene.add( plane );
-  console.log('made a scene', porsche);
 };
 
 window.loop = (dt, input) => {
-  // Move the Porsche based on user input
-  const p = scene.getObjectByName('porsche');
-  const speed = 0.05 * dt; // Adjust the speed as needed
   
-  const planeSizeX = 900;
-  const planeSizeZ = 900;
+  const p = scene.getObjectByName('rock');
+  const speed = 0.04 * dt; 
+  
+  const planeSizeX = 990;
+  const planeSizeZ = 990;
   const minX = -planeSizeX / 2;
   const maxX = planeSizeX / 2;
   const minZ = -planeSizeZ / 2;
@@ -58,36 +57,35 @@ window.loop = (dt, input) => {
 
   if (input.keys.has('ArrowUp') && p.position.z - speed >= minZ) {
     p.position.z -= speed;
-     p.rotation.z -= 0.05;
-    console.log(p.rotation);
+    p.rotation.x += 0.01 * dt;
     camera.position.copy(p.position);
-    camera.position.add(new THREE.Vector3(5, 5, 5)); // Offset the camera position if needed
-    camera.lookAt(p.position); // Make the camera look at the Porsche
-  
+    camera.position.add(new THREE.Vector3(5, 5, 5)); 
+    camera.lookAt(p.position);
   }
 
   if (input.keys.has('ArrowDown') && p.position.z + speed <= maxZ) {
     p.position.z += speed;
+    p.rotation.x += 0.01 * dt; 
     camera.position.copy(p.position);
-    camera.position.add(new THREE.Vector3(5, 5, 5)); // Offset the camera position if needed
-    camera.lookAt(p.position); // Make the camera look at the Porsche
-    
+    camera.position.add(new THREE.Vector3(5, 5, 5)); 
+    camera.lookAt(p.position);
   }
 
   if (input.keys.has('ArrowLeft') && p.position.x - speed >= minX) {
     p.position.x -= speed;
+    p.rotation.z += 0.01 * dt;
     camera.position.copy(p.position);
-    camera.position.add(new THREE.Vector3(5, 5, 5)); // Offset the camera position if needed
-    camera.lookAt(p.position); // Make the camera look at the Porsche
+    camera.position.add(new THREE.Vector3(5, 5, 5)); 
+    camera.lookAt(p.position); 
   }
 
-  if (input.keys.has('ArrowRight')&& p.position.x + speed <= maxX) {
+  if (input.keys.has('ArrowRight') && p.position.x + speed <= maxX) {
     p.position.x += speed;
+    p.rotation.z += 0.01 * dt;
     camera.position.copy(p.position);
-    camera.position.add(new THREE.Vector3(5, 5, 5)); // Offset the camera position if needed
-    camera.lookAt(p.position); // Make the camera look at the Porsche
+    camera.position.add(new THREE.Vector3(5, 5, 5)); 
+    camera.lookAt(p.position);
   }
   
-  // Render the scene
   renderer.render(scene, camera);
 };
