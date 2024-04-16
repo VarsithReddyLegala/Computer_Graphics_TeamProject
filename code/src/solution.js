@@ -22,17 +22,6 @@ window.init = async () => {
 
   const directionalLight = new THREE.DirectionalLight(0xffffff, 10);
   scene.add(directionalLight);
- 
-  const planeSizeX = 990; // Adjusted plane size after scaling
-  const planeSizeZ = 990; // Adjusted plane size after scaling
-  const treeScaleX = 0.02;
-  const treeScaleZ = 0.02;
-  const treeOffsetX = (planeSizeX / 2) - (treeScaleX * 50); // Considering tree's scale and texture repeat
-  const treeOffsetZ = (planeSizeZ / 2) - (treeScaleZ * 50); // Considering tree's scale and texture repeat
-  const treeSpacing = 150; // Spacing between trees
-  const numTreesAlongX = Math.floor(planeSizeX / treeSpacing);
-  const numTreesAlongZ = Math.floor(planeSizeZ / treeSpacing);
-
   const geometry = new THREE.PlaneGeometry( 10, 10 );
   const texture = new THREE.TextureLoader().load('./assets/grass.jpg' ); 
   texture.wrapS = THREE.RepeatWrapping;
@@ -52,42 +41,7 @@ window.init = async () => {
   rock.scale.set(2,2,2);
   scene.add(rock);
   scene.add( plane );
-   for (let i = 0; i < numTreesAlongX; i++) {
-    const treePositionX = treeOffsetX - (i * treeSpacing);
-    const treePositionZ1 = treeOffsetZ;
-    const treePositionZ2 = -treeOffsetZ;
 
-    const tree1 = await load('./assets/tree/scene.gltf');
-    tree1.name = `tree_${i}_1`;
-    tree1.position.set(treePositionX, 1, treePositionZ1);
-    tree1.scale.set(treeScaleX, 0.02, treeScaleZ);
-    scene.add(tree1);
-
-    const tree2 = await load('./assets/tree/scene.gltf');
-    tree2.name = `tree_${i}_2`;
-    tree2.position.set(treePositionX, 1, treePositionZ2);
-    tree2.scale.set(treeScaleX, 0.02, treeScaleZ);
-    scene.add(tree2);
-  }
-
-  // Place trees along the Z edges
-  for (let j = 1; j < numTreesAlongZ; j++) {
-    const treePositionZ = treeOffsetZ - (j * treeSpacing);
-    const treePositionX1 = treeOffsetX;
-    const treePositionX2 = -treeOffsetX;
-
-    const tree1 = await load('./assets/tree/scene.gltf');
-    tree1.name = `tree_0_${j}`;
-    tree1.position.set(treePositionX1, 1, treePositionZ);
-    tree1.scale.set(treeScaleX, 0.02, treeScaleZ);
-    scene.add(tree1);
-
-    const tree2 = await load('./assets/tree/scene.gltf');
-    tree2.name = `tree_1_${j}`;
-    tree2.position.set(treePositionX2, 1, treePositionZ);
-    tree2.scale.set(treeScaleX, 0.02, treeScaleZ);
-    scene.add(tree2);
-  }
 };
 
 window.loop = (dt, input) => {
