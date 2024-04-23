@@ -1,0 +1,241 @@
+{
+  "accessors": [
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 577,
+      "max": [
+        2.3975000381469727,
+        -0.11720000207424164,
+        2.2023000717163086
+      ],
+      "min": [
+        -2.3910000324249268,
+        -6.101200103759766,
+        -2.189500093460083
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 6924,
+      "componentType": 5126,
+      "count": 577,
+      "max": [
+        0.9892391562461853,
+        0.9944436550140381,
+        0.9971172213554382
+      ],
+      "min": [
+        -0.9939533472061157,
+        -0.9956673383712769,
+        -0.9945352077484131
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5126,
+      "count": 577,
+      "max": [
+        0.9901755452156067,
+        0.9611964225769043,
+        0.9398907423019409,
+        1.0
+      ],
+      "min": [
+        -0.9959360957145691,
+        -0.7320474982261658,
+        -0.8872830867767334,
+        1.0
+      ],
+      "type": "VEC4"
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 577,
+      "max": [
+        0.9902999997138977,
+        0.9994999766349792
+      ],
+      "min": [
+        0.0005000000237487257,
+        0.0005000000237487257
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "componentType": 5125,
+      "count": 2586,
+      "type": "SCALAR"
+    }
+  ],
+  "asset": {
+    "extras": {
+      "author": "laboratorija (https://sketchfab.com/laboratorija)",
+      "license": "CC-BY-NC-SA-4.0 (http://creativecommons.org/licenses/by-nc-sa/4.0/)",
+      "source": "https://sketchfab.com/3d-models/red-rock-scan-ed294d24cf5949e4973bfe6e33c672e0",
+      "title": "Red Rock scan"
+    },
+    "generator": "Sketchfab-12.67.0",
+    "version": "2.0"
+  },
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 10344,
+      "name": "floatBufferViews",
+      "target": 34963
+    },
+    {
+      "buffer": 0,
+      "byteLength": 4616,
+      "byteOffset": 10344,
+      "byteStride": 8,
+      "name": "floatBufferViews",
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 13848,
+      "byteOffset": 14960,
+      "byteStride": 12,
+      "name": "floatBufferViews",
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 9232,
+      "byteOffset": 28808,
+      "byteStride": 16,
+      "name": "floatBufferViews",
+      "target": 34962
+    }
+  ],
+  "buffers": [
+    {
+      "byteLength": 38040,
+      "uri": "scene.bin"
+    }
+  ],
+  "images": [
+    {
+      "uri": "textures/Material__25_baseColor.png"
+    },
+    {
+      "uri": "textures/Material__25_metallicRoughness.png"
+    },
+    {
+      "uri": "textures/Material__25_normal.png"
+    }
+  ],
+  "materials": [
+    {
+      "doubleSided": true,
+      "name": "Material__25",
+      "normalTexture": {
+        "index": 2
+      },
+      "occlusionTexture": {
+        "index": 1
+      },
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 0
+        },
+        "metallicFactor": 0.0,
+        "metallicRoughnessTexture": {
+          "index": 1
+        },
+        "roughnessFactor": 0.6297637195121951
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "Object_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 1,
+            "POSITION": 0,
+            "TANGENT": 2,
+            "TEXCOORD_0": 3
+          },
+          "indices": 4,
+          "material": 0,
+          "mode": 4
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "children": [
+        1
+      ],
+      "matrix": [
+        -0.010289552961134207,
+        -0.058977628633046585,
+        0.08009846925882201,
+        0.0,
+        0.09794050601036108,
+        -0.020070673824409746,
+        -0.0021967552929633193,
+        0.0,
+        0.01737189616817081,
+        0.07822280642722255,
+        0.059828169045272016,
+        0.0,
+        3.047644853591919,
+        -0.6207258105278022,
+        3.0344669818878174,
+        1.0
+      ],
+      "name": "Sketchfab_model"
+    },
+    {
+      "children": [
+        2
+      ],
+      "name": "RedRock LowPoly.obj.cleaner.materialmerger.gles"
+    },
+    {
+      "mesh": 0,
+      "name": "Object_2"
+    }
+  ],
+  "samplers": [
+    {
+      "magFilter": 9729,
+      "minFilter": 9987,
+      "wrapS": 10497,
+      "wrapT": 10497
+    }
+  ],
+  "scene": 0,
+  "scenes": [
+    {
+      "name": "Sketchfab_Scene",
+      "nodes": [
+        0
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "sampler": 0,
+      "source": 0
+    },
+    {
+      "sampler": 0,
+      "source": 1
+    },
+    {
+      "sampler": 0,
+      "source": 2
+    }
+  ]
+}
