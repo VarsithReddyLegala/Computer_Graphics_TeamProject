@@ -80,16 +80,6 @@ window.init = async () => {
     smallRock.name = `smallrock_${i}`;
     scene.add(smallRock);
   }
-  const redRockModel = await load('./assets/redrock/scene.gltf');
-  // Place small rocks at random locations
-  for (let i = 0; i < numRocks; i++) {
-    const redrock = redRockModel.clone();
-    redrock.position.set(20, 0,20+i);
-    redrock.name = `redrock_${i}`;
-    redrock.scale.set(30,30,30)
-    scene.add(redrock);
-  }
-
 };
 
 // Collision check and end game logic
