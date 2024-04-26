@@ -32,6 +32,24 @@ function showGameOverMessage() {
   `;
   document.body.appendChild(gameOverDiv);
 }
+function ShowLossMessage() {
+  console.log("SHIVA");
+  const gameOverDiv = document.createElement("div");
+  gameOverDiv.id = "game-over";
+  gameOverDiv.style.position = "absolute";
+  gameOverDiv.style.top = "50%";
+  gameOverDiv.style.left = "50%";
+  gameOverDiv.style.transform = "translate(-50%, -50%)";
+  gameOverDiv.style.backgroundColor = "rgba(0, 0, 0, 0.8)";
+  gameOverDiv.style.color = "white";
+  gameOverDiv.style.padding = "20px";
+  gameOverDiv.style.border = "2px solid white";
+  gameOverDiv.innerHTML = `
+    <h1>Game Over!</h1>
+    <p>You Hit a Human You Loss!!</p>
+  `;
+  document.body.appendChild(gameOverDiv);
+}
 
 // Initialize the scene
 window.init = async () => {
@@ -67,7 +85,7 @@ window.init = async () => {
   scene.add(rock);
 
   // Small rocks
-  const smallRockModel = await load('./assets/smallrock/scene.gltf');
+  const smallRockModel = await load('./assets/squarerocks/scene.gltf');
    const range = 100;
 
   // Place small rocks at random locations
@@ -78,24 +96,61 @@ window.init = async () => {
     const randomZ = Math.random() * range - range / 2;
     smallRock.position.set(randomX, 0, randomZ);
     smallRock.name = `smallrock_${i}`;
+    smallRock.collide=false;
     scene.add(smallRock);
   }
+
+  const treemodel= await load('./assets/tree/scene.gltf');
+  for (let i = 0; i < 20; i++) {
+    const tree = treemodel.clone();
+    tree.castShadow=true;
+    const randomX = Math.random() * 500 - 500 / 2;
+    const randomZ = Math.random() * 500 - 500 / 2;
+    tree.position.set(randomX, 0, randomZ);
+    tree.scale.set(0.05,0.05,0.05);
+    tree.name = `tree_${i}`;
+    scene.add(tree);
+  }
+  const PersonModel = await load('./assets/People/scene.gltf');
+
+ // Place small rocks at random locations
+ for (let i = 0; i < numRocks; i++) {
+   const people = PersonModel.clone();
+   people.castShadow=true;
+   const randomX = Math.random() * 600 - 600 / 2;
+   const randomZ = Math.random() * 600 - 600 / 2;
+   people.position.set(randomX, 0, randomZ);
+   people.name = `people_${i}`;
+   people.scale.set(5,5,5);
+   people.collide=false;
+   scene.add(people);
+ }
+
+
 };
 
 // Collision check and end game logic
 function check() {
-  const p = scene.getObjectByName('rock');
-  const box = new THREE.Box3().setFromObject(p);
+  const mainRock = scene.getObjectByName('rock');
+  const mainRockBox = new THREE.Box3().setFromObject(mainRock);
 
   scene.children.forEach((obj) => {
-    if (obj.name.startsWith('smallrock')) {
+    if (obj.name.startsWith('smallrock') && !obj.collide) {
       const smallRockBox = new THREE.Box3().setFromObject(obj);
-      if (box.intersectsBox(smallRockBox)) {
-        // Scale the rock and remove small rock
-        p.scale.multiplyScalar(1.1);
-        scene.remove(obj);
-        remainingRocks--;
+      if (mainRockBox.intersectsBox(smallRockBox)) {
+        const c = mainRock.worldToLocal(obj.position);
+        console.log("Before:", obj.position);
+        obj.parent = mainRock;
 
+        obj.position.x=c.x;
+        obj.position.y=c.y;
+        obj.position.z=c.z;
+
+        console.log("After:", obj.position);
+        console.log(mainRock.position);
+
+        remainingRocks--;
+        obj.collide=true;
         if (remainingRocks === 0) {
           gameOver = true;
           showGameOverMessage(); // Show game over message
@@ -104,6 +159,20 @@ function check() {
     }
   });
 }
+
+function Check1() {
+  const mainRock = scene.getObjectByName('rock');
+  const mainRockBox = new THREE.Box3().setFromObject(mainRock);
+  scene.children.forEach((obj) => {
+    if (obj.name.startsWith('people')) {
+      const person = new THREE.Box3().setFromObject(obj);
+      if (mainRockBox.intersectsBox(person)) {
+          gameOver = true;
+          ShowLossMessage();
+        }
+      }
+    });
+  }
 
 // Game loop with end game check
 window.loop = (dt, input) => {
@@ -131,6 +200,7 @@ window.loop = (dt, input) => {
     camera.position.copy(p.position);
     camera.position.add(new THREE.Vector3(5, 5, 5)); 
     camera.lookAt(p.position);
+    Check1();
     check();
   }
 
@@ -140,6 +210,7 @@ window.loop = (dt, input) => {
     camera.position.copy(p.position);
     camera.position.add(new THREE.Vector3(5, 5, 5));
     camera.lookAt(p.position);
+    Check1();
     check();
   }
 
@@ -150,6 +221,7 @@ window.loop = (dt, input) => {
     camera.position.copy(p.position);
     camera.position.add(new THREE.Vector3(5, 5, 5)); 
     camera.lookAt(p.position); 
+    Check1();
     check();
   }
 
@@ -160,6 +232,7 @@ window.loop = (dt, input) => {
     camera.position.copy(p.position);
     camera.position.add(new THREE.Vector3(5, 5, 5)); 
     camera.lookAt(p.position); 
+    Check1();
     check();
   }
 
