@@ -6,6 +6,19 @@ let renderer, scene, camera;
 const numRocks = 10;
 let remainingRocks = numRocks;
 let gameOver = false;
+const audioLoader = new THREE.AudioLoader();
+const listener = new THREE.AudioListener();
+let beepSound;
+
+audioLoader.load('./assets/BeepSound.mp3', function (buffer) {
+  // Create the Audio object
+  beepSound = new THREE.PositionalAudio(listener);
+
+  // Configure the Audio object
+  beepSound.setBuffer(buffer);
+  beepSound.setRefDistance(20);
+  beepSound.setVolume(20);
+});
 
 // Utility to load GLTF models
 const load = (url) => new Promise((resolve, reject) => {
@@ -15,7 +28,6 @@ const load = (url) => new Promise((resolve, reject) => {
 
 // Create a message overlay when the game is over
 function showGameOverMessage() {
-  console.log("SHIVA");
   const gameOverDiv = document.createElement("div");
   gameOverDiv.id = "game-over";
   gameOverDiv.style.position = "absolute";
@@ -33,7 +45,6 @@ function showGameOverMessage() {
   document.body.appendChild(gameOverDiv);
 }
 function ShowLossMessage() {
-  console.log("SHIVA");
   const gameOverDiv = document.createElement("div");
   gameOverDiv.id = "game-over";
   gameOverDiv.style.position = "absolute";
@@ -140,6 +151,7 @@ window.init = async () => {
    BigRock.collide=false;
    scene.add(BigRock);
  }
+ scene.add(listener);
 
 
 };
@@ -166,11 +178,15 @@ function check() {
 
         remainingRocks--;
         obj.collide=true;
+        if (beepSound) {
+          beepSound.play();
+        }
         if (remainingRocks === 0) {
           gameOver = true;
           showGameOverMessage(); // Show game over message
         }
       }
+     
     }
   });
 }
