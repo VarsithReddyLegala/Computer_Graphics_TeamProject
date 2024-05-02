@@ -126,6 +126,21 @@ window.init = async () => {
    scene.add(people);
  }
 
+ const BigRockModel = await load('./assets/smallrock/scene.gltf');
+
+ // Place small rocks at random locations
+ for (let i = 0; i < numRocks; i++) {
+   const BigRock = BigRockModel.clone();
+   BigRock.castShadow=true;
+   const randomX = Math.random() * 600 - 600 / 2;
+   const randomZ = Math.random() * 600 - 600 / 2;
+   BigRock.position.set(randomX, 0, randomZ);
+   BigRock.name = `BigRock_${i}`;
+   BigRock.scale.set(5,5,5);
+   BigRock.collide=false;
+   scene.add(BigRock);
+ }
+
 
 };
 
