@@ -9,6 +9,9 @@ let gameOver = false;
 const audioLoader = new THREE.AudioLoader();
 const listener = new THREE.AudioListener();
 let beepSound;
+let startTime;
+const gameTime = 30; // 1 minute in seconds
+let timerDisplay;
 
 audioLoader.load('./assets/BeepSound.mp3', function (buffer) {
   // Create the Audio object
@@ -19,6 +22,24 @@ audioLoader.load('./assets/BeepSound.mp3', function (buffer) {
   beepSound.setRefDistance(20);
   beepSound.setVolume(20);
 });
+
+function startTimer() {
+  startTime = Date.now();
+}
+
+function updateTimer() {
+  const elapsedTime = Math.floor((Date.now() - startTime) / 1000); // Convert to seconds
+  const remainingTime = Math.max(gameTime - elapsedTime, 0);
+  const minutes = Math.floor(remainingTime / 60);
+  const seconds = remainingTime % 60;
+  const timerText = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  timerDisplay.textContent = `Time: ${timerText}`;
+
+  if (remainingTime === 0) {
+    gameOver = true;
+    TimerMessage();
+  }
+}
 
 // Utility to load GLTF models
 const load = (url) => new Promise((resolve, reject) => {
@@ -39,11 +60,32 @@ function showGameOverMessage() {
   gameOverDiv.style.padding = "20px";
   gameOverDiv.style.border = "2px solid white";
   gameOverDiv.innerHTML = `
-    <h1>Game Over!</h1>
-    <p>Congratulations, you've collected all the rocks!</p>
+  <h1>Game Over!</h1>
+  <p>Congratulations, you've collected all the rocks!</p>
   `;
   document.body.appendChild(gameOverDiv);
 }
+
+function TimerMessage() {
+  const gameOverDiv = document.createElement("div");
+  gameOverDiv.id = "game-over";
+  gameOverDiv.style.position = "absolute";
+  gameOverDiv.style.top = "50%";
+  gameOverDiv.style.left = "50%";
+  gameOverDiv.style.transform = "translate(-50%, -50%)";
+  gameOverDiv.style.backgroundColor = "rgba(0, 0, 0, 0.8)";
+  gameOverDiv.style.color = "white";
+  gameOverDiv.style.padding = "20px";
+  gameOverDiv.style.border = "2px solid white";
+  gameOverDiv.innerHTML = `
+ 
+    <h1>Game Over!</h1>
+    <p>You Did not Complete in the given Time Limit!!!</p>
+  `;
+  document.body.appendChild(gameOverDiv);
+}
+
+
 function ShowLossMessage() {
   const gameOverDiv = document.createElement("div");
   gameOverDiv.id = "game-over";
@@ -87,6 +129,19 @@ window.init = async () => {
   plane.scale.set(100, 100, 100);
 
   scene.add(plane);
+
+  startTimer();
+
+  // Display timer at the top of the screen
+  timerDisplay = document.createElement("div");
+  timerDisplay.id = "timer";
+  timerDisplay.style.position = "absolute";
+  timerDisplay.style.top = "20px";
+  timerDisplay.style.left = "20px";
+  timerDisplay.style.color = "white";
+  timerDisplay.style.fontSize = "24px";
+  timerDisplay.style.backgroundColor="black"
+  document.body.appendChild(timerDisplay);
 
   // Main rock object
   const rock = await load('./assets/Rock/scene.gltf');
@@ -153,6 +208,8 @@ window.init = async () => {
  }
  scene.add(listener);
 
+ 
+
 
 };
 
@@ -206,13 +263,17 @@ function Check1() {
   }
 
 // Game loop with end game check
+let deceleration = 0.01; 
+let acceleration=0;
 window.loop = (dt, input) => {
   if (gameOver) {
     return; // Don't proceed if the game is over
   }
 
+  updateTimer();
+
   const p = scene.getObjectByName('rock');
-  const speed = 0.04 * dt;
+  const speed = acceleration * dt;
 
   const planeSizeX = 950;
   const planeSizeZ = 950;
@@ -220,14 +281,12 @@ window.loop = (dt, input) => {
   const maxX = planeSizeX / 2;
   const minZ = -planeSizeZ / 2;
   const maxZ = planeSizeZ / 2;
-
- 
   if (input.keys.has('ArrowUp') && p.position.z - speed >= minZ) {
-    console.log(p.rotation.x);
-    console.log(p.rotation.y);
-    console.log(p.rotation.z);
+    if (acceleration < 0.1) {
+      acceleration += 0.001;
+    }
     p.position.z -= speed;
-    p.rotation.x -= 0.01 * dt;
+    p.rotation.x -=  acceleration * 10;
     camera.position.copy(p.position);
     camera.position.add(new THREE.Vector3(5, 5, 5)); 
     camera.lookAt(p.position);
@@ -237,7 +296,7 @@ window.loop = (dt, input) => {
 
   if (input.keys.has('ArrowDown') && p.position.z + speed <= maxZ) {
     p.position.z += speed;
-    p.rotation.x += 0.01 * dt;
+    p.rotation.x += acceleration * dt;
     camera.position.copy(p.position);
     camera.position.add(new THREE.Vector3(5, 5, 5));
     camera.lookAt(p.position);
@@ -248,7 +307,7 @@ window.loop = (dt, input) => {
   if (input.keys.has('ArrowLeft') && p.position.x - speed >= minX) {
     p.rotation.x = 0;
     p.position.x -= speed;
-    p.rotation.z += 0.01 * dt;
+    p.rotation.z += acceleration* dt;
     camera.position.copy(p.position);
     camera.position.add(new THREE.Vector3(5, 5, 5)); 
     camera.lookAt(p.position); 
@@ -259,13 +318,12 @@ window.loop = (dt, input) => {
   if (input.keys.has('ArrowRight') && p.position.x + speed <= maxX) {
     p.rotation.x = 0;
     p.position.x += speed;
-    p.rotation.z -= 0.01 * dt;
+    p.rotation.z -= acceleration * dt;
     camera.position.copy(p.position);
     camera.position.add(new THREE.Vector3(5, 5, 5)); 
     camera.lookAt(p.position); 
     Check1();
     check();
   }
-
   renderer.render(scene, camera);
 };
