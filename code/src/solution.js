@@ -295,6 +295,9 @@ window.loop = (dt, input) => {
   }
 
   if (input.keys.has('ArrowDown') && p.position.z + speed <= maxZ) {
+    if (acceleration < 0.1) {
+      acceleration += 0.001;
+    }
     p.position.z += speed;
     p.rotation.x += acceleration * dt;
     camera.position.copy(p.position);
@@ -305,6 +308,9 @@ window.loop = (dt, input) => {
   }
 
   if (input.keys.has('ArrowLeft') && p.position.x - speed >= minX) {
+    if (acceleration < 0.1) {
+      acceleration += 0.001;
+    }
     p.rotation.x = 0;
     p.position.x -= speed;
     p.rotation.z += acceleration* dt;
@@ -316,6 +322,9 @@ window.loop = (dt, input) => {
   }
 
   if (input.keys.has('ArrowRight') && p.position.x + speed <= maxX) {
+    if (acceleration < 0.1) {
+      acceleration += 0.001;
+    }
     p.rotation.x = 0;
     p.position.x += speed;
     p.rotation.z -= acceleration * dt;
