@@ -3,14 +3,14 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 // Game variables
 let renderer, scene, camera;
-const numRocks = 10;
+const numRocks = 7;
 let remainingRocks = numRocks;
 let gameOver = false;
 const audioLoader = new THREE.AudioLoader();
 const listener = new THREE.AudioListener();
 let beepSound;
 let startTime;
-const gameTime = 30; // 1 minute in seconds
+const gameTime = 120; // 1 minute in seconds
 let timerDisplay;
 
 audioLoader.load('./assets/BeepSound.mp3', function (buffer) {
@@ -230,9 +230,6 @@ function check() {
         obj.position.y=c.y;
         obj.position.z=c.z;
 
-        console.log("After:", obj.position);
-        console.log(mainRock.position);
-
         remainingRocks--;
         obj.collide=true;
         if (beepSound) {
@@ -262,8 +259,6 @@ function Check1() {
     });
   }
 
-// Game loop with end game check
-let deceleration = 0.01; 
 let acceleration=0;
 window.loop = (dt, input) => {
   if (gameOver) {
