@@ -10,7 +10,7 @@ const audioLoader = new THREE.AudioLoader();
 const listener = new THREE.AudioListener();
 let beepSound;
 let startTime;
-const gameTime = 120; // 1 minute in seconds
+const gameTime = 120; 
 let timerDisplay;
 
 audioLoader.load('./assets/BeepSound.mp3', function (buffer) {
