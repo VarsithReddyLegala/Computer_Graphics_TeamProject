@@ -14,7 +14,7 @@ const gameTime = 120;
 let timerDisplay;
 
 audioLoader.load('./assets/BeepSound.mp3', function (buffer) {
-  // Create the Audio object
+
   beepSound = new THREE.PositionalAudio(listener);
 
   // Configure the Audio object
